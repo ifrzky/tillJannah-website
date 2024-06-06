@@ -1,0 +1,52 @@
+rute default : 
+/api/
+
+#GET
+/api/sholat --> Jadwal sholat
+
+#GET
+/api/kalender --> Kalender Islam
+
+
+#GET
+/api/alquran/ --> Semua Surat
+
+#GET
+/api/alquran/:numberSurat --> Detail 1 Surat saja
+
+#GET
+/api/alquran/ayat/:numberSurat --> Semua Ayat di surat
+
+
+
+####
+LOGIN & REGISTER
+
+default : 
+/api/users
+
+#POST
+/api/users/register --> Mendaftarkan user
+
+#POST
+/api/users/login --> Login users
+
+#POST
+/api/users/profile --> Mengupdate data user
+
+
+####
+ARTICLE
+
+default : 
+/api/aticle
+
+#GET
+/api/article/ --> Show all Articles
+
+#GET
+/api/article/:id --> Show article by id
+
+#POST
+/api/article/create --> Create article
+*header Authorization bearer (token)
