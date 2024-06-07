@@ -4,6 +4,9 @@
   "description": "Till Jannah Server",
   "main": "app.js",
   "scripts": {
+    "dev": "npm-run-all --parallel start:server start:frontend",
+    "start:server": "node server.js",
+    "start:frontend": "vite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
