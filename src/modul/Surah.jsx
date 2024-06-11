@@ -13,7 +13,7 @@ const Surah = ({ numberSurah, onSurahChange, allSurahs, handleSurahChange }) => 
         axios
             .get(`http://localhost:5000/api/alquran/${numberSurah}`)
             .then((response) => {
-                console.log('Surah detail response:', response.data);
+                // console.log('Surah detail response:', response.data); clean the console
                 setSurah(response.data);
                 setLoading(false);
             })
@@ -29,7 +29,7 @@ const Surah = ({ numberSurah, onSurahChange, allSurahs, handleSurahChange }) => 
             axios
                 .get(`http://localhost:5000/api/alquran/ayat/${numberSurah}`)
                 .then((response) => {
-                    console.log('Surah verses response:', response.data);
+                    // console.log('Surah verses response:', response.data); clean the console
                     setVerses(response.data);
                 })
                 .catch((error) => {
