@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Nav from "../components/Navbar";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,13 +21,15 @@ const Login = () => {
       );
       // Simpan token ke localStorage atau state management (misalnya Redux)
       localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/"); // Redirect ke halaman utama setelah login berhasil
+      navigate("/profile"); // Redirect ke halaman utama setelah login berhasil
     } catch (error) {
       setError("Invalid email or password");
     }
   };
 
   return (
+    <>
+    <Nav />
     <div className="flex items-center justify-center h-screen">
       <div className="__wrapper shadow-md px-5 py-5 rounded-md w-[400px]">
         <section>
@@ -79,6 +82,7 @@ const Login = () => {
         </section>
       </div>
     </div>
+    </>
   );
 };
 
