@@ -32,6 +32,9 @@ const Nav = () => {
               <button>Home</button>
             </li>
             <li className="mx-2 text-2xl">
+              <a href="/Login">Login</a>
+            </li>
+            <li className="mx-2 text-2xl">
               <button>About</button>
             </li>
             <li className="mx-2 text-2xl">

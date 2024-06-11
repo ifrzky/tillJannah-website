@@ -5,6 +5,7 @@ import Card from '../components/Card'
 import Footer from '../components/Footer'
 import PrayerTimes from '../modul/PrayerTimes'
 import ZakatCalc from '../components/ZakatCalc'
+import Quran from '../modul/Quran'
 
 const Home = () => {
   return (
@@ -16,9 +17,9 @@ const Home = () => {
         <section className='home'>
           <Hero />
         </section>
-        {/* <section className='alquran'>
+        <section className='__alquran justify-center items-center'>
           <Quran />
-        </section> */}
+        </section>
         <section className='__prayertime px-10 py-10 flex flex-col md:flex-row justify-center'>
           <div className='flex'>
             <ZakatCalc />
