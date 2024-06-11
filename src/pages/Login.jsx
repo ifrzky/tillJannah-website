@@ -20,6 +20,7 @@ const Login = () => {
         }
       );
       // Simpan token ke localStorage atau state management (misalnya Redux)
+      localStorage.setItem("accessToken", data.token);
       localStorage.setItem("userInfo", JSON.stringify(data));
       navigate("/profile"); // Redirect ke halaman utama setelah login berhasil
     } catch (error) {
