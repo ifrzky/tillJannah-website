@@ -13,7 +13,7 @@ const Quran = () => {
         axios
             .get("http://localhost:5000/api/alquran/")
             .then((response) => {
-                console.log('API response:', response.data);
+                // console.log('API response:', response.data); clean the console
                 const sortedSurahs = response.data.sort((a, b) => a.number - b.number);
                 setSurahs(sortedSurahs);
                 if (sortedSurahs.length > 0) {
