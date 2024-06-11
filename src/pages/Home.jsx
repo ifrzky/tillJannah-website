@@ -10,9 +10,7 @@ import Quran from '../modul/Quran'
 const Home = () => {
   return (
     <>
-      <div className='App px-5 py-5'>
-        <Navbar />
-      </div>
+      <Navbar />
       <div className='__wrappper justify-center items-center min-h-screen'>
         <section className='home'>
           <Hero />

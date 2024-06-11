@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Nav = () => {
+  const isLoggedIn = !!localStorage.getItem("userInfo");
+
   return (
-    <div className="">
+    <div className="p-5">
       <nav className="flex flex-wrap justify-between items-center p-4">
         <div className="logo text-2xl">
           <h1>Till Jannah</h1>
@@ -29,11 +32,17 @@ const Nav = () => {
           </label>
           <ul className="lg:flex lg:flex-row lg:justify-between lg:gap-5 lg:items-center lg:pt-0 lg:w-auto hidden">
             <li className="mx-2 text-2xl">
-              <button>Home</button>
+              <Link to="/">Home</Link>
             </li>
-            <li className="mx-2 text-2xl">
-              <a href="/Login">Login</a>
-            </li>
+            {isLoggedIn ? (
+              <li className="mx-2 text-2xl">
+                <Link to="/profile">Profile</Link>
+              </li>
+            ) : (
+              <li className="mx-2 text-2xl">
+                <Link to="/login">Login</Link>
+              </li>
+            )}
             <li className="mx-2 text-2xl">
               <button>About</button>
             </li>
