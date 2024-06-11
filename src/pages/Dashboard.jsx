@@ -11,7 +11,6 @@ const Dashboard = () => {
     ]
     const navigate = useNavigate();
 
-    // Ambil informasi pengguna dari localStorage
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     const [newName, setNewName] = useState('');
@@ -20,7 +19,6 @@ const Dashboard = () => {
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
-        // Logika untuk mengambil daftar artikel milik pengguna
         const fetchUserArticles = async () => {
         try {
             const response = await axios.get(`/api/articles/user/${userInfo._id}`);
