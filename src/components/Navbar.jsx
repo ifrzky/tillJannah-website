@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Nav = () => {
-  const isLoggedIn = !!localStorage.getItem("userInfo");
+  const isLoggedIn = !!sessionStorage.getItem("userInfo");
 
   return (
     <div className="p-5">

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import FlashMessage from "../components/FlashMessage";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [flashMessage, setFlashMessage] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -14,22 +16,30 @@ const Register = () => {
     try {
       const { data } = await axios.post(
         "http://localhost:5000/api/users/register",
-        {
-          name,
-          email,
-          password,
-        }
+        { name, email, password }
       );
-      // Simpan token ke localStorage atau state management (misalnya Redux)
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      navigate("/"); // Redirect ke halaman utama setelah register berhasil
+      setFlashMessage({
+        message: "Registration successful. Please log in.",
+        type: "success",
+      });
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000); // Redirect after 3 seconds
     } catch (error) {
       setError("User already exists");
+      setFlashMessage({ message: "User already exists", type: "error" });
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen">
+      {flashMessage && (
+        <FlashMessage
+          message={flashMessage.message}
+          type={flashMessage.type}
+          clearMessage={() => setFlashMessage(null)}
+        />
+      )}
       <div className="__wrapper shadow-md px-5 py-5 rounded-md w-[400px]">
         <section>
           <h1 className="text-3xl font-bold mb-4">Register</h1>

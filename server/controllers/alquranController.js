@@ -40,7 +40,6 @@ const findAyat = async (req, res) => {
     }
 
     const numberOfVerses = parseInt(suratInfo.number_of_verses, 10);
-    console.log(numberOfVerses);
 
     // Variabel untuk menyimpan semua ayat
     let allAyat = [];
