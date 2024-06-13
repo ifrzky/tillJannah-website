@@ -13,7 +13,6 @@ const Surah = ({ numberSurah, onSurahChange, allSurahs, handleSurahChange }) => 
         axios
             .get(`http://localhost:5000/api/alquran/${numberSurah}`)
             .then((response) => {
-                // console.log('Surah detail response:', response.data); clean the console
                 setSurah(response.data);
                 setLoading(false);
             })
@@ -29,7 +28,6 @@ const Surah = ({ numberSurah, onSurahChange, allSurahs, handleSurahChange }) => 
             axios
                 .get(`http://localhost:5000/api/alquran/ayat/${numberSurah}`)
                 .then((response) => {
-                    // console.log('Surah verses response:', response.data); clean the console
                     setVerses(response.data);
                 })
                 .catch((error) => {
@@ -69,7 +67,7 @@ const Surah = ({ numberSurah, onSurahChange, allSurahs, handleSurahChange }) => 
                 <div>
                     <div className='flex flex-row grow gap-2'>
                         <select 
-                            className="flex grow rounded-md px-5 py-5 bg-green-700 text-white"
+                            className="flex grow rounded-md px-5 py-5 bg-gradient-to-r from-yellow-400 to-yellow-500"
                             value={currentVerseIndex} 
                             onChange={handleVerseChange}
                         >
@@ -80,34 +78,35 @@ const Surah = ({ numberSurah, onSurahChange, allSurahs, handleSurahChange }) => 
                             ))}
                         </select>
                         <select 
-                                className="flex grow rounded-md p-5 bg-green-700 text-white"
-                                value={numberSurah} 
-                                onChange={handleSurahChange}
-                            >
-                                {allSurahs.map((surah) => (
-                                    <option key={surah.number} value={surah.number}>
-                                        {surah.number}. {surah.name_short} ({surah.name_en})
-                                    </option>
-                                ))}
+                            className="flex grow rounded-md p-5 bg-gradient-to-r from-yellow-400 to-yellow-500"
+                            value={numberSurah} 
+                            onChange={handleSurahChange}
+                        >
+                            {allSurahs.map((surah) => (
+                                <option key={surah.number} value={surah.number}>
+                                    {surah.number}. {surah.name_short} ({surah.name_en})
+                                </option>
+                            ))}
                         </select>
                     </div>
                     <div className=''>
                         {verses.length > 0 && (
                             <div>
                                 <div className='grid justify-items-end mx-5 my-5'>
-                                    <p className='texl-xl'>{numberSurah}:{verses[currentVerseIndex].ayah}</p>
+                                    <p className='text-xl'>{numberSurah}:{verses[currentVerseIndex].ayah}</p>
                                     <p className='my-5 text-3xl'>{verses[currentVerseIndex].arab}</p>
                                     <p>{verses[currentVerseIndex].text}</p>
-                                    
                                 </div>
                                 <div className='flex flex-row-reverse gap-5'>
-                                    <button className="rounded-md p-2 bg-green-600 hover:bg-green-700 text-white" 
+                                    <button 
+                                        className="rounded-md p-2 text-black bg-gradient-to-r from-yellow-400 to-yellow-500" 
                                         onClick={handleNextVerse} 
                                         disabled={currentVerseIndex === verses.length - 1}
                                     >
                                         {currentVerseIndex === verses.length - 1 ? 'Next Surah' : 'Next Ayat'}
                                     </button>
-                                    <button className="rounded-md p-2 bg-green-600 hover:bg-green-700 text-white" 
+                                    <button 
+                                        className="rounded-md p-2 text-black bg-gradient-to-r from-yellow-400 to-yellow-500" 
                                         onClick={handlePreviousVerse} 
                                         disabled={currentVerseIndex === 0}
                                     >

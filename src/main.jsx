@@ -8,8 +8,12 @@ import "./index.css";
 import Dashboard from "./pages/Dashboard";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Slug";
+import Quran from "./pages/Quran";  
 import Details from "./pages/Details";
 import PrivateRoute from "./components/PrivateRoutes";
+import { ImOpera } from "react-icons/im";
+import Feed from "./pages/Feed";
+import EditPost from "./pages/EditPost";
 
 const BrowserRouter = createBrowserRouter([
   {
@@ -36,6 +40,18 @@ const BrowserRouter = createBrowserRouter([
     path: "/article/:id",
     element: <Details />,
   },
+  {
+    path: "/quran",
+    element: <Quran />,
+  },
+  {
+    path: "/feeds",
+    element: <Feed />,
+  },
+  {
+    path: "/edit-article/:id",
+    element: <PrivateRoute element={<EditPost />} />, // Gunakan PrivateRoute
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

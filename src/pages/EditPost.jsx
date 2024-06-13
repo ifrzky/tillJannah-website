@@ -1,23 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // Import the styles
+import "react-quill/dist/quill.snow.css";
 
-const CreatePost = () => {
+const EditPost = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const accessToken = sessionStorage.getItem("accessToken");
+        const response = await axios.get(`http://localhost:5000/api/article/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        setTitle(response.data.title);
+        setContent(response.data.content);
+        setThumbnail(response.data.thumbnail);
+      } catch (error) {
+        console.error("Failed to fetch article:", error);
+        setError("Failed to fetch article. Please try again.");
+      }
+    };
+
+    fetchArticle();
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const accessToken = sessionStorage.getItem("accessToken");
-      const response = await axios.post(
-        "http://localhost:5000/api/article/create",
+      await axios.put(
+        `http://localhost:5000/api/article/${id}`,
         {
           title,
           content,
@@ -25,32 +47,25 @@ const CreatePost = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`, // token otentikasi dalam header
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
-      console.log("Article created successfully:", response.data);
-      setTitle("");
-      setContent("");
-      setThumbnail("");
-      setError(null);
-      setSuccessMessage("Article created successfully!");
-
-      // Redirect to the dashboard after 3 seconds
+      setSuccessMessage("Article updated successfully!");
       setTimeout(() => {
         setSuccessMessage("");
         navigate("/profile");
       }, 3000);
     } catch (error) {
-      console.error("Failed to create article:", error);
-      setError("Failed to create article. Please try again.");
+      console.error("Failed to update article:", error);
+      setError("Failed to update article. Please try again.");
     }
   };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
-        <h1 className="text-3xl font-bold mb-4 text-center">Create New Article</h1>
+        <h1 className="text-3xl font-bold mb-4 text-center">Edit Article</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -95,7 +110,7 @@ const CreatePost = () => {
             type="submit"
             className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors w-full"
           >
-            Create Article
+            Update Article
           </button>
         </form>
       </div>
@@ -103,4 +118,4 @@ const CreatePost = () => {
   );
 };
 
-export default CreatePost;
+export default EditPost;
