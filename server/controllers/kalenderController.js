@@ -1,33 +1,18 @@
 const axios = require("axios");
 
-const now = new Date();
-const day = String(now.getDate()).padStart(2, "0");
-const month = String(now.getMonth() + 1).padStart(2, "0");
-const year = now.getFullYear();
-const date = `${year}-${month}-${day}`;
-
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-
-const tomorrow_day = String(tomorrow.getDate()).padStart(2, "0");
-const tomorrow_month = String(tomorrow.getMonth() + 1).padStart(2, "0");
-const tomorrow_year = tomorrow.getFullYear();
-const date2 = `${tomorrow_year}-${tomorrow_month}-${tomorrow_day}`;
-
+const date = new Date();
+const month = date.getMonth() + 1;
 const findkalender = async (req, res) => {
+  const { month, year } = req.body;
   try {
     const response = await axios.get(
-      `https://api.myquran.com/v2/cal/hijr/${date}/adj=-1`
+      `https://api.aladhan.com/v1/gToHCalendar/${month}/${year}`
     );
-    const response2 = await axios.get(
-      `https://api.myquran.com/v2/cal/hijr/${date2}/adj=-1`
-    );
-    if (!response.data.status && !response2.data.status) {
+    if (!response.data.status) {
       throw new Error("Network response was not ok");
     }
     res.json({
-      today: response.data.data.date,
-      tomorrow: response2.data.data.date,
+      data: response.data.data,
     });
   } catch (error) {
     console.error("Error fetching data:", error.message);
