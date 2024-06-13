@@ -24,9 +24,11 @@
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.1",
+    "quill": "^2.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1"
   },
   "devDependencies": {

@@ -1,57 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { FaUserCircle, FaBook } from 'react-icons/fa';
 
 const Nav = () => {
-  const isLoggedIn = !!sessionStorage.getItem("userInfo");
+  const [isAtTop, setIsAtTop] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [userName, setUserName] = useState('');
+  
+  useEffect(() => {
+    const userInfo = sessionStorage.getItem("userInfo");
+    if (userInfo) {
+      const parsedUserInfo = JSON.parse(userInfo);
+      setUserName(parsedUserInfo.name);
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsAtTop(window.scrollY === 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   return (
-    <div className="p-5">
-      <nav className="flex flex-wrap justify-between items-center p-4">
-        <div className="logo text-2xl">
-          <h1>Till Jannah</h1>
+    <div className={`sticky top-0 z-50 transition-all duration-300 ${isAtTop ? 'p-10' : 'p-5'} bg-white shadow-md`}>
+      <nav className="flex items-center justify-between">
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center text-2xl">
+            <img src='src/assets/__mosaic.png' alt="Till Jannah Logo" className="w-10 h-10 mr-2" />
+            <h1>Till Jannah</h1>
+          </Link>
         </div>
-        <div className="menu">
-          <input type="checkbox" id="menu-toggle" className="hidden" />
-          <label
-            htmlFor="menu-toggle"
-            className="cursor-pointer lg:hidden block"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
+        <div className="hidden lg:flex flex-1 justify-center space-x-6">
+          <Link className="text-xl hover:text-green-700" to="/feeds">Feeds</Link>
+          <Link className="text-xl hover:text-green-700" to="/about">About</Link>
+          <Link className="text-xl hover:text-green-700" to="/zakat">Zakat Calc</Link>
+        </div>
+        <div className="hidden lg:flex items-center space-x-6">
+          <Link className="text-xl hover:text-green-700 flex items-center" to="/quran">
+            <FaBook className="text-2xl mr-2" />
+            Quran
+          </Link>
+          {userName ? (
+            <Link className="text-xl hover:text-green-700 flex items-center" to="/profile">
+              <FaUserCircle className="text-2xl mr-2" />
+              {userName}
+            </Link>
+          ) : (
+            <Link className="text-xl hover:text-green-700" to="/login">Login</Link>
+          )}
+        </div>
+        <div className="lg:hidden flex items-center">
+          <button onClick={toggleMenu}>
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
             </svg>
-          </label>
-          <ul className="lg:flex lg:flex-row lg:justify-between lg:gap-5 lg:items-center lg:pt-0 lg:w-auto hidden">
-            <li className="mx-2 text-2xl">
-              <Link to="/">Home</Link>
-            </li>
-            {isLoggedIn ? (
-              <li className="mx-2 text-2xl">
-                <Link to="/profile">Profile</Link>
-              </li>
-            ) : (
-              <li className="mx-2 text-2xl">
-                <Link to="/login">Login</Link>
-              </li>
-            )}
-            <li className="mx-2 text-2xl">
-              <button>About</button>
-            </li>
-            <li className="mx-2 text-2xl">
-              <button>Zakat Calc</button>
-            </li>
-          </ul>
+          </button>
         </div>
       </nav>
+      {menuOpen && (
+        <div className="lg:hidden mt-3">
+          <Link className="block text-xl py-2 hover:text-green-700" to="/feeds" onClick={() => setMenuOpen(false)}>Feeds</Link>
+          <Link className="block text-xl py-2 hover:text-green-700" to="/about" onClick={() => setMenuOpen(false)}>About</Link>
+          <Link className="block text-xl py-2 hover:text-green-700" to="/zakat" onClick={() => setMenuOpen(false)}>Zakat Calc</Link>
+          <Link className="block text-xl py-2 hover:text-green-700 flex items-center" to="/quran" onClick={() => setMenuOpen(false)}>
+            <FaBook className="text-2xl mr-2" />
+            Quran
+          </Link>
+          {userName ? (
+            <Link className="block text-xl py-2 hover:text-green-700 flex items-center" to="/profile" onClick={() => setMenuOpen(false)}>
+              <FaUserCircle className="text-2xl mr-2" />
+              {userName}
+            </Link>
+          ) : (
+            <Link className="block text-xl py-2 hover:text-green-700" to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
+          )}
+        </div>
+      )}
     </div>
   );
 };

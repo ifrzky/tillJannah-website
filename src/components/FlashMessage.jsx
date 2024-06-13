@@ -1,5 +1,3 @@
-// src/components/FlashMessage.jsx
-
 import React, { useEffect } from "react";
 
 const FlashMessage = ({ message, type, clearMessage }) => {

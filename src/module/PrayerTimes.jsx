@@ -61,7 +61,7 @@ const PrayerTimes = () => {
         <div key={index} className="mb-8">
           <div
             key={index}
-            className="mb-4 px-5 py-5 h-fit bg-green-500 text-white rounded-lg"
+            className="mb-4 px-5 py-5 h-fit bg-gradient-to-r from-green-400 to-green-700 text-white rounded-lg border-2 border-gold"
           >
             <p className="font-bold text-xl px-5 pb-3">{day.date.readable}</p>
             <div className="flex flex-col flex-wrap">
@@ -69,7 +69,7 @@ const PrayerTimes = () => {
                 {Object.entries(day.timings).map(
                   ([prayer, { time, icon }], index) => (
                     <div key={index} className="flex">
-                      <li className="mb-1 flex flex-col bg-green-600 rounded-md px-5 py-5 justify-center items-center">
+                      <li className="mb-1 flex flex-col bg-green-600 shadow-md rounded-md px-5 py-5 justify-center items-center border-2 border-gold">
                         <div className="mr-2 flex">{icon}</div>
                         <div>
                           <h1 className="font-bold text-center">{prayer}</h1>
