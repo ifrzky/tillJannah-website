@@ -7,6 +7,8 @@ rute default :
 #GET
 /api/kalender --> Kalender Islam
 
+req body, with format : month/year
+
 
 #GET
 /api/alquran/ --> Semua Surat
@@ -50,3 +52,11 @@ default :
 #POST
 /api/article/create --> Create article
 *header Authorization bearer (token)
+
+#DELETE
+/api/article/delete --> Delete article
+*header Authorization bearer (token)
+
+#PUT
+/api/article/update/${id} --> Update article
+*header Authorization bearer (token) 

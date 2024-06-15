@@ -66,8 +66,55 @@ const createArticle = asyncHandler(async (req, res) => {
   res.status(201).json(createdArticle);
 });
 
+const deleteArticles = asyncHandler(async (req, res) => {
+  const { ids } = req.body;
+
+  if (!ids || !Array.isArray(ids) || ids.length === 0) {
+    res.status(400);
+    throw new Error(
+      "Invalid input: ids is required and must be an array of IDs"
+    );
+  }
+
+  try {
+    const result = await article.deleteMany({ _id: { $in: ids } });
+    res
+      .status(200)
+      .json({ message: `${result.deletedCount} articles deleted.` });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error deleting articles", error: err.message });
+  }
+});
+
+const updateArticle = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { title, content, categories, thumbnail } = req.body;
+
+  try {
+    const updatedArticle = await article.findByIdAndUpdate(
+      id,
+      { title, content, categories, thumbnail },
+      { new: true }
+    );
+
+    if (!updatedArticle) {
+      res.status(404);
+      throw new Error("Article not found");
+    }
+
+    res.status(200).json(updatedArticle);
+  } catch (error) {
+    res.status(500);
+    throw new Error("Error updating article: " + error.message);
+  }
+});
+
 module.exports = {
   findAll,
   findDetail,
   createArticle,
+  deleteArticles,
+  updateArticle,
 };

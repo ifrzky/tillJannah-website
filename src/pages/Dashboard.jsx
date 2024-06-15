@@ -65,7 +65,7 @@ const Dashboard = () => {
   const handleDelete = async () => {
     try {
       const accessToken = sessionStorage.getItem("accessToken");
-      await axios.delete("http://localhost:5000/api/articles/?", {
+      await axios.delete("http://localhost:5000/api/article/delete", {
         data: { ids: selectedArticles },
         headers: {
           Authorization: `Bearer ${accessToken}`,

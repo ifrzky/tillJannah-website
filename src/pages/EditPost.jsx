@@ -10,6 +10,7 @@ const EditPost = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const [categories, setCategories] = useState(""); // Add state for categories
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -17,14 +18,18 @@ const EditPost = () => {
     const fetchArticle = async () => {
       try {
         const accessToken = sessionStorage.getItem("accessToken");
-        const response = await axios.get(`http://localhost:5000/api/article/${id}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await axios.get(
+          `http://localhost:5000/api/article/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
         setTitle(response.data.title);
         setContent(response.data.content);
         setThumbnail(response.data.thumbnail);
+        setCategories(response.data.categories); // Set categories state
       } catch (error) {
         console.error("Failed to fetch article:", error);
         setError("Failed to fetch article. Please try again.");
@@ -39,10 +44,11 @@ const EditPost = () => {
     try {
       const accessToken = sessionStorage.getItem("accessToken");
       await axios.put(
-        `http://localhost:5000/api/article/${id}`,
+        `http://localhost:5000/api/article/update/${id}`,
         {
           title,
           content,
+          categories,
           thumbnail,
         },
         {
@@ -67,7 +73,9 @@ const EditPost = () => {
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
         <h1 className="text-3xl font-bold mb-4 text-center">Edit Article</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
+        {successMessage && (
+          <p className="text-green-500 mb-4">{successMessage}</p>
+        )}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="title" className="block text-xl mb-2">
@@ -104,6 +112,18 @@ const EditPost = () => {
               onChange={(e) => setThumbnail(e.target.value)}
               className="w-full px-3 py-2 border rounded-md"
               required
+            />
+          </div>
+          <div>
+            <label htmlFor="categories" className="block text-xl mt-16 mb-2">
+              Categories
+            </label>
+            <input
+              type="text"
+              id="categories"
+              value={categories}
+              onChange={(e) => setCategories(e.target.value)}
+              className="w-full px-3 py-2 border rounded-md"
             />
           </div>
           <button
