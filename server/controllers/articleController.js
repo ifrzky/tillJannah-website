@@ -2,6 +2,7 @@ const axios = require("axios");
 const article = require("../models/articleModel");
 const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
+const upload = require("../config/uploadConfig"); // Import multer config
 
 const now = new Date();
 const day = String(now.getDate()).padStart(2, "0");
@@ -35,35 +36,43 @@ const findDetail = (req, res) => {
     });
 };
 
-const createArticle = asyncHandler(async (req, res) => {
-  const { title, thumbnail, categories, content } = req.body;
+const createArticle = asyncHandler((req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      res.status(400).json({ message: "Error uploading image", error: err });
+    } else {
+      const { title, categories, content } = req.body;
 
-  if (!title || !content) {
-    res.status(400);
-    throw new Error("Title and content are required");
-  }
+      if (!title || !content) {
+        res.status(400);
+        throw new Error("Title and content are required");
+      }
 
-  // Mengambil nama pengguna dari objek req.user
-  const author = req.user.name;
-  const date = `${day}-${month}-${year}`;
+      const author = req.user.name;
+      const date = `${day}-${month}-${year}`;
+      const thumbnail = req.file
+        ? `../server/ImagesThumbnail/${req.file.filename}`
+        : "";
 
-  const newArticle = new article({
-    date,
-    thumbnail,
-    author,
-    title,
-    categories,
-    content,
+      const newArticle = new article({
+        date,
+        thumbnail,
+        author,
+        title,
+        categories,
+        content,
+      });
+
+      const createdArticle = await newArticle.save();
+
+      await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { ownArticle: createdArticle._id } },
+        { new: true }
+      );
+      res.status(201).json(createdArticle);
+    }
   });
-
-  const createdArticle = await newArticle.save();
-
-  await User.findByIdAndUpdate(
-    req.user._id,
-    { $push: { ownArticle: createdArticle._id } },
-    { new: true }
-  );
-  res.status(201).json(createdArticle);
 });
 
 const deleteArticles = asyncHandler(async (req, res) => {
@@ -88,27 +97,36 @@ const deleteArticles = asyncHandler(async (req, res) => {
   }
 });
 
-const updateArticle = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { title, content, categories, thumbnail } = req.body;
+const updateArticle = asyncHandler((req, res) => {
+  upload(req, res, async (err) => {
+    if (err) {
+      res.status(400).json({ message: "Error uploading image", error: err });
+    } else {
+      const { id } = req.params;
+      const { title, content, categories } = req.body;
+      const thumbnail = req.file
+        ? `../server/ImagesThumbnail/${req.file.filename}`
+        : req.body.thumbnail;
 
-  try {
-    const updatedArticle = await article.findByIdAndUpdate(
-      id,
-      { title, content, categories, thumbnail },
-      { new: true }
-    );
+      try {
+        const updatedArticle = await article.findByIdAndUpdate(
+          id,
+          { title, content, categories, thumbnail },
+          { new: true }
+        );
 
-    if (!updatedArticle) {
-      res.status(404);
-      throw new Error("Article not found");
+        if (!updatedArticle) {
+          res.status(404);
+          throw new Error("Article not found");
+        }
+
+        res.status(200).json(updatedArticle);
+      } catch (error) {
+        res.status(500);
+        throw new Error("Error updating article: " + error.message);
+      }
     }
-
-    res.status(200).json(updatedArticle);
-  } catch (error) {
-    res.status(500);
-    throw new Error("Error updating article: " + error.message);
-  }
+  });
 });
 
 module.exports = {

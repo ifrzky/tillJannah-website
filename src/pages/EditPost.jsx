@@ -9,7 +9,7 @@ const EditPost = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
+  const [thumbnail, setThumbnail] = useState(null);
   const [categories, setCategories] = useState(""); // Add state for categories
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
@@ -39,21 +39,27 @@ const EditPost = () => {
     fetchArticle();
   }, [id]);
 
+  const handleThumbnailChange = (e) => {
+    setThumbnail(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const accessToken = sessionStorage.getItem("accessToken");
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      formData.append("thumbnail", thumbnail);
+      formData.append("categories", categories);
+
       await axios.put(
         `http://localhost:5000/api/article/update/${id}`,
-        {
-          title,
-          content,
-          categories,
-          thumbnail,
-        },
+        formData,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -103,13 +109,12 @@ const EditPost = () => {
           </div>
           <div>
             <label htmlFor="thumbnail" className="block text-xl mt-16 mb-2">
-              Thumbnail URL
+              Thumbnail
             </label>
             <input
-              type="text"
+              type="file"
               id="thumbnail"
-              value={thumbnail}
-              onChange={(e) => setThumbnail(e.target.value)}
+              onChange={handleThumbnailChange}
               className="w-full px-3 py-2 border rounded-md"
               required
             />
