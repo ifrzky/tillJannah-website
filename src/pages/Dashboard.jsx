@@ -48,7 +48,9 @@ const Dashboard = () => {
 
   const handleSelectArticle = (id) => {
     setSelectedArticles((prev) =>
-      prev.includes(id) ? prev.filter((articleId) => articleId !== id) : [...prev, id]
+      prev.includes(id)
+        ? prev.filter((articleId) => articleId !== id)
+        : [...prev, id]
     );
   };
 
@@ -69,7 +71,9 @@ const Dashboard = () => {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      setUserArticles((prev) => prev.filter((article) => !selectedArticles.includes(article.id)));
+      setUserArticles((prev) =>
+        prev.filter((article) => !selectedArticles.includes(article.id))
+      );
       setSelectedArticles([]);
       setIsDeleteMode(false);
       setShowConfirmPopup(false);
@@ -132,8 +136,7 @@ const Dashboard = () => {
                           : "bg-white border-gray-300"
                       } flex items-center justify-center ml-2 cursor-pointer`}
                       onClick={() => handleSelectArticle(article.id)}
-                    >
-                    </div>
+                    ></div>
                   </div>
                 </div>
               ))}
@@ -169,7 +172,9 @@ const Dashboard = () => {
       {showConfirmPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md shadow-md text-center">
-            <p className="mb-4">Are you sure you want to delete the selected articles?</p>
+            <p className="mb-4">
+              Are you sure you want to delete the selected articles?
+            </p>
             <div className="flex justify-around">
               <button
                 className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors"

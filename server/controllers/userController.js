@@ -23,6 +23,8 @@ const authUser = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       name: user.name,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth.toISOString().split("T")[0], // Format dateOfBirth
       email: user.email,
       isAdmin: user.isAdmin,
       pic: user.pic,
@@ -40,21 +42,32 @@ const authUser = asyncHandler(async (req, res) => {
 //@route           POST /api/users/
 //@access          Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, pic } = req.body;
+  const { name, gender, dateOfBirth, email, password, pic } = req.body;
 
   const userExists = await User.findOne({ email });
 
   if (userExists) {
     const message = "User already exists";
     req.flash("flash_message", message);
-    res.status(404).json({ message });
+    return res.status(404).json({ message });
+  }
+
+  let profilePic = pic;
+  if (!pic) {
+    if (gender === "Laki-laki") {
+      profilePic = "https://cdn-icons-png.flaticon.com/128/4264/4264711.png";
+    } else if (gender === "Perempuan") {
+      profilePic = "https://cdn-icons-png.flaticon.com/128/7923/7923856.png";
+    }
   }
 
   const user = await User.create({
     name,
+    gender,
+    dateOfBirth,
     email,
     password,
-    pic,
+    pic: profilePic,
   });
 
   if (user) {
@@ -64,6 +77,8 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       name: user.name,
+      gender: user.gender,
+      dateOfBirth: user.dateOfBirth.toISOString().split("T")[0], // Format dateOfBirth
       email: user.email,
       isAdmin: user.isAdmin,
       pic: user.pic,

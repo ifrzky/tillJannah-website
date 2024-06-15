@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const userSchema = mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -15,6 +15,22 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
+      validate: {
+        validator: function (v) {
+          return /^(?=.*[A-Z])(?=.*\W).{8,}$/.test(v);
+        },
+        message: (props) =>
+          `${props.value} is not a valid password! Password must be at least 8 characters long, contain at least one uppercase letter and one symbol.`,
+      },
+    },
+    gender: {
+      type: String,
+      required: true,
+      enum: ["Laki-laki", "Perempuan"],
+    },
+    dateOfBirth: {
+      type: Date,
+      required: true,
     },
     isAdmin: {
       type: Boolean,
@@ -24,8 +40,7 @@ const userSchema = mongoose.Schema(
     pic: {
       type: String,
       required: true,
-      default:
-        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
+      default: "https://icon-library.com/icon/male-icon-5.html",
     },
     ownArticle: [
       {
@@ -44,6 +59,18 @@ const userSchema = mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        // Format dateOfBirth as YYYY-MM-DD
+        if (ret.dateOfBirth) {
+          ret.dateOfBirth = ret.dateOfBirth.toISOString().split("T")[0];
+        }
+        return ret;
+      },
+    },
   }
 );
 
