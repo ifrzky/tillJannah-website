@@ -96,29 +96,28 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.pic = req.body.pic || user.pic;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
-
-    const updatedUser = await user.save();
-
+  const userID = req.user._id;
+  const updateData = {};
+  if (req.body.name) updateData.name = req.body.name;
+  if (req.body.email) updateData.email = req.body.email;
+  if (req.body.gender) updateData.gender = req.body.gender;
+  if (req.body.dateOfBirth) updateData.dateOfBirth = req.body.dateOfBirth;
+  const updateUser = await User.findByIdAndUpdate(userID, updateData, {
+    new: true,
+  });
+  if (updateUser) {
     res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      pic: updatedUser.pic,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
+      _id: updateUser._id,
+      name: updateUser.name,
+      email: updateUser.email,
+      gender: updateUser.gender,
+      dateOfBirth: updateUser.dateOfBirth.toISOString().split("T")[0],
+      pic: updateUser.pic,
+      token: generateToken(updateUser._id),
     });
   } else {
-    req.flash("flash_message", "User Not Found");
-    res.status(404).json({ message: "User Not Found" });
+    req.flash("flash_message", "User not found");
+    res.status(404).json({ message: "User not found" });
   }
 });
 

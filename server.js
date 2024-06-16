@@ -25,7 +25,12 @@ process.env.TZ = "Asia/Jakarta";
 connectDB();
 
 const app = express(); // main thing
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // sesuaikan dengan domain front-end Anda
+    credentials: true, // mengizinkan kredensial
+  })
+);
 
 app.use(express.json()); // to accept json data
 
