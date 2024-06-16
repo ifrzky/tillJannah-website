@@ -88,13 +88,25 @@ const Dashboard = () => {
         message: "Profile updated successfully.",
         type: "success",
       });
-      sessionStorage.setItem("userData", JSON.stringify(userInfo));
+
+      // Clear flash message after 3 seconds
+      setTimeout(() => {
+        setFlashMessage(null);
+      }, 3000);
+
+      // Reset edit mode
+      setIsEditMode(false);
     } catch (error) {
       console.error("Failed to update profile:", error);
       setFlashMessage({
         message: "Failed to update profile. Please try again.",
         type: "error",
       });
+
+      // Clear flash message after 3 seconds
+      setTimeout(() => {
+        setFlashMessage(null);
+      }, 3000);
     }
   };
 
