@@ -18,8 +18,8 @@ const Home = () => {
         <h1 className='text-6xl my-20 font-bold text-center mb-5'>Melihat Jadwal Salat</h1>
         <section className='__prayertime px-10 py-10 flex flex-col md:flex-row justify-center'>
           <div className='flex'>
-            {/* <Kalender /> */}
-            <ZakatCalc />
+            <Kalender />
+            {/* <ZakatCalc /> */}
           </div>
           <div className='flex'>
             <PrayerTimes />
