@@ -27,7 +27,7 @@ connectDB();
 const app = express(); // main thing
 app.use(
   cors({
-    origin: "http://localhost:5173", // sesuaikan dengan domain front-end Anda
+    origin: "till-jannah.vercel.app", // sesuaikan dengan domain front-end Anda
     credentials: true, // mengizinkan kredensial
   })
 );
