@@ -1,21 +1,21 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const connectDB = require("./server/config/db.js");
+const connectDB = require("./config/db.js");
 const colors = require("colors");
 const path = require("path");
 const cors = require("cors");
 const session = require("express-session");
 const flash = require("connect-flash");
 
-const userRoutes = require("./server/routes/userRoutes.js");
-const jadwalRoutes = require("./server/routes/jadwalRoutes.js");
-const kalenderRoutes = require("./server/routes/kalenderRoutes.js");
-const alquranRoutes = require("./server/routes/alquranRoutes.js");
-const articleRoutes = require("./server/routes/articleRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
+const jadwalRoutes = require("./routes/jadwalRoutes.js");
+const kalenderRoutes = require("./routes/kalenderRoutes.js");
+const alquranRoutes = require("./routes/alquranRoutes.js");
+const articleRoutes = require("./routes/articleRoutes.js");
 const {
   errorHandler,
   notFound,
-} = require("./server/middleware/errorMiddleware.js");
+} = require("./middleware/errorMiddleware.js");
 
 dotenv.config();
 
