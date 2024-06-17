@@ -43,7 +43,7 @@ const Nav = () => {
         <div className="hidden lg:flex flex-1 justify-center space-x-6">
           <Link className="text-xl hover:text-green-700" to="/feeds">Feeds</Link>
           <Link className="text-xl hover:text-green-700" to="/about">About</Link>
-          <Link className="text-xl hover:text-green-700" to="/zakat">Zakat Calc</Link>
+          <Link className="text-xl hover:text-green-700" to="/zakat-page">Zakat Calc</Link>
         </div>
         <div className="hidden lg:flex items-center space-x-6">
           <Link className="text-xl hover:text-green-700 flex items-center" to="/quran">
@@ -71,7 +71,7 @@ const Nav = () => {
         <div className="lg:hidden mt-3">
           <Link className="block text-xl py-2 hover:text-green-700" to="/feeds" onClick={() => setMenuOpen(false)}>Feeds</Link>
           <Link className="block text-xl py-2 hover:text-green-700" to="/about" onClick={() => setMenuOpen(false)}>About</Link>
-          <Link className="block text-xl py-2 hover:text-green-700" to="/zakat" onClick={() => setMenuOpen(false)}>Zakat Calc</Link>
+          <Link className="block text-xl py-2 hover:text-green-700" to="/zakat-page" onClick={() => setMenuOpen(false)}>Zakat Calc</Link>
           <Link className="block text-xl py-2 hover:text-green-700 flex items-center" to="/quran" onClick={() => setMenuOpen(false)}>
             <FaBook className="text-2xl mr-2" />
             Quran

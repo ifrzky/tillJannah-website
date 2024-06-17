@@ -4,8 +4,9 @@ import Nav from "../components/Navbar";
 import axios from "axios";
 import Button from "../components/Button";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import ZakatCalc from "../components/ZakatCalc";
+import ZakatCalc from "./ZakatCalc";
 import FlashMessage from "../components/FlashMessage";
+import Footer from "../components/Footer";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -147,7 +148,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <Nav />
+    <Nav />
+    <div className="flex flex-row">
       {flashMessage && (
         <FlashMessage
           message={flashMessage.message}
@@ -155,8 +157,8 @@ const Dashboard = () => {
           clearMessage={() => setFlashMessage(null)}
         />
       )}
-      <div className="flex flex-row m-5 gap-3">
-        <div className="w-1/5 shadow-md rounded-md p-5 sticky top-0">
+      <div className="flex flex-col lg:flex-row m-5 gap-3">
+        <div className="w-full lg:w-1/3 shadow-md rounded-md p-5 top-0">
           <div className="flex flex-col items-center justify-center">
             <img
               src={userInfo.pic}
@@ -165,7 +167,6 @@ const Dashboard = () => {
             />
             <div className="text-center">
               <p className="mb-2 text-2xl font-bold">{userInfo.name}</p>
-              {/* <p className="mb-2">{userInfo.email}</p> */}
             </div>
             <div className="text-lg font-bold">My Info</div>
             {isEditMode ? (
@@ -293,32 +294,36 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-        <div className="w-4/5 h-full rounded-md shadow-md p-5 flex flex-col items-center justify-center">
-          <h2 className="text-xl mb-2 left-0 m-5 font-bold">My Articles</h2>
-          {error ? (
-            <p className="text-red-500">{error}</p>
+        <div className="w-full lg:w-[1200px] h-full rounded-md shadow-md p-5 flex flex-col">
+          <h2 className="text-xl mb-2 left-0 m-5 font-bold bg-gradient-to-r from-green-400 to-green-700 w-full p-5 m-5 border-2 border-gold rounded-xl text-white">My Articles</h2>
+          {userArticles.length === 0 ? (
+            <div className="flex items-center justify-center">
+              <p className="text-red-500 items-center justify-center m-10">No article created...</p>
+            </div>
           ) : (
-            <div className="grid grid-cols-3 gap-4 m-5">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 m-5">
               {userArticles.map((article) => (
                 <div
                   key={article.id}
-                  className="border p-4 rounded-md shadow-md flex flex-col justify-between relative"
+                  className="border p-4 rounded-md bg-white shadow-md flex flex-col justify-between relative"
                 >
                   <div>
                     <h3 className="font-bold text-xl mb-2">{article.title}</h3>
                     <div
-                      className="overflow-hidden overflow-ellipsis whitespace-nowrap mb-10"
+                      className="overflow-hidden truncate whitespace-nowrap mb-10"
                       dangerouslySetInnerHTML={{ __html: article.content }}
                     />
-                    <Button to={`/article/${article.id}`}>Read More</Button>
                   </div>
-                  <div className="flex justify-end mt-4">
-                    <Link to={`/edit-article/${article.id}`}>
-                      <FaEdit className="text-xl text-blue-500 hover:text-blue-600 transition-colors" />
-                    </Link>
+                  <div className="flex flex-col justify-end mt-4">
+                    <div className="flex justify-end justify-between">
+                      <Link to={`/edit-article/${article.id}`}>
+                        <FaEdit className="text-xl text-blue-500 hover:text-blue-600 transition-colors" />
+                      </Link>
+                    <Button to={`/article/${article.id}`}>Read More</Button>
+                    </div>
                     {isDeleteMode && (
                       <div
-                        className={`h-8 w-8 rounded-full border-2 ${
+                        className={`h-8 w-8 rounded-full border-2 justify-end ${
                           selectedArticles.includes(article.id)
                             ? "bg-blue-500 border-blue-500"
                             : "bg-white border-gray-300"
@@ -357,7 +362,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <ZakatCalc />
       {showConfirmPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md shadow-md text-center">
@@ -381,6 +385,8 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+    </div>
+    <Footer />
     </>
   );
 };

@@ -14,6 +14,9 @@ import PrivateRoute from "./components/PrivateRoutes";
 import { ImOpera } from "react-icons/im";
 import Feed from "./pages/Feed";
 import EditPost from "./pages/EditPost";
+import ZakatCalc from "./pages/ZakatCalc";
+import About from "./pages/About";
+import ZakatPage from "./pages/ZakatPage";
 
 const BrowserRouter = createBrowserRouter([
   {
@@ -51,7 +54,19 @@ const BrowserRouter = createBrowserRouter([
   {
     path: "/edit-article/:id",
     element: <PrivateRoute element={<EditPost />} />, // Gunakan PrivateRoute
-  }
+  },
+  // {
+  //   path: "/zakat-calc",
+  //   element: <ZakatCalc />,
+  // },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/zakat-page",
+    element: <ZakatPage />
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

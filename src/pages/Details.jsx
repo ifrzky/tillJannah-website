@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Post from "../pages/Slug";
+import Footer from "../components/Footer";
 
 const Details = () => {
   const { id } = useParams(); // Menggunakan useParams untuk mendapatkan ID dari URL
@@ -38,6 +39,7 @@ const Details = () => {
         content={article.content}
         thumbnail={article.thumbnail}
       />
+      <Footer />
     </div>
   );
 };

@@ -3,11 +3,16 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import Nav from "../components/Navbar";
+import AOS from "aos";
 
 const Feed = () => {
   const [articles, setArticles] = useState([]);
   const userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({ duration: 1500 });
+  }, []);
 
   useEffect(() => {
     if (!userInfo) {
@@ -39,8 +44,8 @@ const Feed = () => {
   return (
     <>
       <Nav />
-      <div className="__wrapper flex justify-center m-20">
-        <div className="user-info w-1/5 shadow-md rounded-md p-10 sticky top-20 h-fit">
+      <div className="__wrapper flex flex-col lg:flex-row justify-center">
+        <div className="user-info hidden shadow-md rounded-md p-10 top-20 h-full">
           <div className="flex flex-col items-center justify-center">
             {userInfo ? (
               <>
@@ -76,9 +81,9 @@ const Feed = () => {
             )}
           </div>
         </div>
-        <div className="__card w-4/5 grid grid-cols-1 gap-6 justify-center bg-gray-100 mx-10 rounded-md p-10 backdrop-blur">
+        <div className="__card w-max-screen grid grid-cols-1 gap-6 justify-center bg-gray-100 mx-5 rounded-md p-10 backdrop-blur">
           {articles.map((article) => (
-            <div key={article.id} className="__card_item w-full max-w-lg mx-auto">
+            <div key={article.id} className="__card_item w-full max-w-lg mx-auto" data-aos="fade-up">
               <div className="__card_item_thumbnail">
                 <img
                   src={article.thumbnail}
